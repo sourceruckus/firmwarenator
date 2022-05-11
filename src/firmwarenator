@@ -19,6 +19,19 @@
 #
 
 
+# assume we're in the source tree if $PWD/firmwarenator.sh.in exists
+if [ -f $(dirname $0)/firmwarenator.sh.in ]; then
+    LIBDIR=$(realpath $(dirname $0))
+    CONFDIR=$LIBDIR
+else
+    LIBDIR=__LIBDIR__
+    CONFDIR=__CONFDIR__
+fi
+. $LIBDIR/firmwarenator.sh
+[ -f $CONFDIR/firmwarenator.conf ] && . $CONFDIR/firmwarenator.conf
+[ -f ~/.firmwarenator.conf ] && . ~/.firmwarenator.conf
+
+
 decho()
 {
     if [ -n "$verbose" ]; then
@@ -89,10 +102,14 @@ fi
 set -- $__opts
 
 # defaults
-comp="zstd"
-compargs="-T0 -10"
+if [ -n "$DEFAULT_COMPRESSOR" ]; then
+    compressor=$DEFAULT_COMPRESSOR
+else
+    compressor="zstd"
+fi
 verbose=
 use_sqsh=
+
 
 # parse the new positional arguments
 while true; do
@@ -106,32 +123,17 @@ while true; do
             shift
             ;;
 	-c|--compressor)
-            compargs=
-            case $2 in
-                gzip)
-                    comp="gzip"
-                    ;;
-                bzip2)
-                    comp="bzip2"
-                    ;;
-                xz)
-                    comp="xz"
-                    ;;
-                zstd)
-                    comp="zstd"
-                    ;;
-                none)
-                    comp="cat"
-                    ;;
-                *)
-                    usage "invalid compressor specified: $2"
-                    exit 1
-                    ;;
-            esac
+            compressor=$2
             shift 2
             ;;
         -C|--compressor-args)
-            compargs+=" $2"
+            # empty compargs if this is the first -C arg
+            if [ -z "$compargs_set" ]; then
+                compargs=$2
+                compargs_set=y
+            else
+                compargs+=" $2"
+            fi
             shift 2
             ;;
         -s|--sqsh)
@@ -154,6 +156,26 @@ filename=$(realpath $1)
 # check for required options
 if [ -z "$filename" ]; then
     usage "IMGNAME required"
+    exit 1
+fi
+
+# figure out compressor settings
+__comp=\$${compressor^^}_COMP
+comp=`eval echo $__comp`
+if [ -z "$compargs_set" ]; then
+    __compargs=\$${compressor^^}_COMP_ARGS
+    compargs=`eval echo $__compargs`
+fi
+__decomp=\$${compressor^^}_DECOMP
+decomp=`eval echo $__decomp`
+# make sure supplied compressor has settings in config file
+if [ -z "$comp" -o -z "$decomp" ]; then
+    usage "invalid compressor specified: $compressor - not in config file"
+    exit 1
+fi
+# make sure system actually has configured compressor available
+if [ ! -x "`which $comp`" -o ! -x "`which $decomp`" ]; then
+    usage "specificed compressor missing utilities: $compressor"
     exit 1
 fi
 
