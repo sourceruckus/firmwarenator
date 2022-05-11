@@ -8,13 +8,13 @@ Licensed under the GPLv3. See the file COPYING for details.
 Firmwarenator is a utility for creating a fw.img file containing all the
 firmware required for the host system.
 
-NOTE: This depends on having the "Loading firmware from %s" printout enabled
-      in the kernel (e.g., add "dyndbg='func fw_get_filesystem_firmware +fmp'"
-      to kernel commandline) and the kernel ring buffer being fresh enough to
-      still have that output available.
+**NOTE**: This depends on having the "Loading firmware from %s" printout
+enabled in the kernel (e.g., add `dyndbg='func fw_get_filesystem_firmware
++fmp'` to kernel commandline) and the kernel ring buffer being fresh enough to
+still have that output available.
 
-      And that all depends on already having a bootable system w/ an uptodate
-      /lib/firmware directory, at least temporarily.
+**NOTE**: And that all depends on already having a bootable system w/ an
+uptodate /lib/firmware directory, at least temporarily.
 
 Get the latest and greatest from https://github.com/sourceruckus/firmwarenator.
 
