@@ -1,8 +1,8 @@
 dist_bin_SCRIPTS =
 dist_bin_SCRIPTS += firmwarenator
 
-sysconf_DATA =
-sysconf_DATA += firmwarenator.conf
+dist_sysconf_DATA =
+dist_sysconf_DATA += firmwarenator.conf
 
 pkgdata_DATA =
 pkgdata_DATA += firmwarenator.sh

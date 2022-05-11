@@ -7,6 +7,7 @@ deb_examples = debian/control debian/get_deps
 EXTRA_DIST =
 EXTRA_DIST += $(top_docs)
 EXTRA_DIST += $(deb_examples)
+EXTRA_DIST += firmwarenator.1.include
 
 man1_MANS = firmwarenator.1
 
@@ -19,8 +20,11 @@ uninstall-local:
 	rm -f $(top_docs:%=$(DESTDIR)$(docdir)/%)
 	rm -f $(deb_examples:%=$(DESTDIR)$(docdir)/%)
 
-firmwarenator.1: config.log ./src/firmwarenator firmwarenator.1.include
-	help2man -o $@ --no-info --include firmwarenator.1.include ./src/firmwarenator
+distclean-local:
+	rm -f $(builddir)/firmwarenator.1
+
+firmwarenator.1: $(srcdir)/src/firmwarenator config.log $(srcdir)/firmwarenator.1.include
+	help2man -o $@ --no-info --include $(srcdir)/firmwarenator.1.include $<
 
 
 # i know this isn't the right way to do this... but it's how i've been
