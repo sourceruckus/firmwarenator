@@ -38,6 +38,10 @@ usage()
     echo
     echo "usage: `basename $0` IMGNAME"
     echo
+    echo "  -h, --help                Show this help message and exit."
+    echo
+    echo "  -V, --version             Show version string and exit."
+    echo
     echo "  -v, --verbose             Display extra output"
     echo
     echo "  -c, --compressor COMP     Use COMP compressor in pipeline during archive"
@@ -75,8 +79,8 @@ usage()
 #       current positional arguments (e.g, $1, $2).
 #
 __opts=$(getopt -un $(basename $0) \
-    -o hvc:C:s \
-    --long help,verbose,compressor:,compressor-args:,sqsh -- $@)
+    -o hVvc:C:s \
+    --long help,version,verbose,compressor:,compressor-args:,sqsh -- $@)
 if [ $? != 0 ]; then
     echo
     usage
@@ -93,6 +97,10 @@ use_sqsh=
 # parse the new positional arguments
 while true; do
     case "$1" in
+        -V|--version)
+            echo "Firmwarenator $VERSION"
+            exit 0
+            ;;
         -v|--verbose)
             verbose=yes
             shift
