@@ -4,7 +4,7 @@ Section: utils
 Priority: optional
 Architecture: __arch__
 Installed-Size: __size__
-Depends: bash, cpio, squashfs, findutils
+Depends: bash, cpio, squashfs-tools, findutils
 Recommends: gzip, bzip2, xz-utils, zstd, ruckusrd
 Replaces: ruckusrd (<< 0.18.0-1)
 #Breaks: ruckusrd (<< 0.18.0-1)
