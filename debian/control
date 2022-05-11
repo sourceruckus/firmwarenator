@@ -10,6 +10,6 @@ Replaces: ruckusrd (<< 0.18.0-1)
 #Breaks: ruckusrd (<< 0.18.0-1)
 Maintainer: Michael D Labriola <veggiemike@sourceruckus.org>
 Homepage: https://github.com/sourceruckus/firmwarenator
-Description: Firmwarenator - a magical machine-specific fw.img creator
- This script is a utility for creating a fw.img file containing all the
- firmware required for the host system.
+Description: Firmwarenator - a magical machine-specific fw.img creator.
+ Firmwarenator is a utility for creating a fw.img file containing all
+ the firmware required for the host system.

@@ -8,15 +8,6 @@
 #
 # This script is a utility for creating a fw.img file containing all the
 # firmware required for the host system.
-#
-# NOTE: This depends on having the "Loading firmware from %s" printout enabled
-#       in the kernel (e.g., adding "dyndbg="func fw_get_filesystem_firmware
-#       +fmp" to kernel commandline) and the kernel ring buffer being fresh
-#       enough to still have that output available.
-#
-#       And that all depends on you already having a bootable system w/ an
-#       uptodate /lib/firmware directory, at least temporarily.
-#
 
 
 # assume we're in the source tree if $PWD/firmwarenator.sh.in exists
@@ -48,6 +39,17 @@ usage()
     fi
     echo "$(basename $0) - a magical machine-specific fw.img creator."
     echo "Copyright (C) 2021-2022 Michael D Labriola <veggiemike@sourceruckus.org>"
+    echo
+    echo "Firmwarenator is a utility for creating a fw.img file containing all the"
+    echo "firmware required for the host system."
+    echo
+    echo "NOTE: This depends on having the \"Loading firmware from %s\" printout enabled"
+    echo "      in the kernel (e.g., add \"dyndbg='func fw_get_filesystem_firmware +fmp'\""
+    echo "      to kernel commandline) and the kernel ring buffer being fresh enough to"
+    echo "      still have that output available."
+    echo
+    echo "      And that all depends on already having a bootable system w/ an uptodate"
+    echo "      /lib/firmware directory, at least temporarily."
     echo
     echo "usage: `basename $0` IMGNAME"
     echo
