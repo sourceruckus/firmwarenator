@@ -59,7 +59,20 @@ m4_foreach_w([P], NEEDED_PROGS,
      AC_MSG_ERROR([Could not find P]))
   ])
 
-# FIXME: add warnings for missing compressors - gzip, bzip2, xz, zstd
+# warn if any "wanted" programs are missing
+AC_DEFUN([WANTED_PROGS],
+	 [dnl compressors
+	  gzip
+	  bzip2
+	  xz
+	  zstd
+	 ])
+
+m4_foreach_w([P], WANTED_PROGS,
+  [AC_PATH_PROG(m4_bpatsubst(m4_toupper(P), [\.], [_]), P)
+   AS_IF([test "$m4_bpatsubst(m4_toupper(P), [\.], [_])" = ""],
+     AC_MSG_WARN([Could not find P]))
+  ])
 
 AC_CONFIG_FILES([Makefile
 		 src/Makefile
