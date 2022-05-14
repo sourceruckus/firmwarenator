@@ -59,6 +59,8 @@ usage()
     echo
     echo "  -v, --verbose             Display extra output"
     echo
+    echo "  -f, --force               Force overwrite existing file."
+    echo
     echo "  -c, --compressor COMP     Use COMP compressor in pipeline during archive"
     echo "                            creation.  Valid compressors are 'gzip', 'bzip2',"
     echo "                            'xz', 'zstd', or 'none'.  Default is 'zstd' w/"
@@ -94,8 +96,8 @@ usage()
 #       current positional arguments (e.g, $1, $2).
 #
 __opts=$(getopt -un $(basename $0) \
-    -o hVvc:C:s \
-    --long help,version,verbose,compressor:,compressor-args:,sqsh -- $@)
+    -o hVvfc:C:s \
+    --long help,version,verbose,force,compressor:,compressor-args:,sqsh -- $@)
 if [ $? != 0 ]; then
     echo
     usage
@@ -110,6 +112,7 @@ else
     compressor="zstd"
 fi
 verbose=
+allow_overwrite=
 use_sqsh=
 
 
@@ -122,6 +125,10 @@ while true; do
             ;;
         -v|--verbose)
             verbose=yes
+            shift
+            ;;
+        -f|--force)
+            allow_overwrite=yes
             shift
             ;;
 	-c|--compressor)
@@ -161,6 +168,12 @@ if [ -z "$filename" ]; then
     exit 1
 fi
 
+# check for existing file
+if [ -e "$filename" -a -z "$allow_overwrite" ]; then
+    echo "Image $filename already exists.  Use -f to overwrite."
+    exit 1
+fi
+
 # figure out compressor settings
 __comp=\$${compressor^^}_COMP
 comp=`eval echo $__comp`
@@ -186,6 +199,7 @@ decho verbose: $verbose
 decho comp: $comp
 decho compargs: $compargs
 decho use_sqsh: $use_sqsh
+decho allow_overwrite: $allow_overwrite
 
 tmpdir=$(mktemp -dt $(basename $0)-XXXX)
 decho tmpdir: $tmpdir
@@ -198,8 +212,28 @@ else
     cpio="cpio"
 fi
 
+# remove potentially existing filename
+#
+# NOTE: We make sure that either the file doesn't exist or we have explicit
+#       permission to overwrite it during argument parsing.
+#
+rm -f $filename
+
 if [ -n "$use_sqsh" ] ; then
-    mksquashfs . $filename -comp xz -e .git -noappend
+    # FIXME: could use zstd for compressor, but then we have to make sure host
+    #        system supports it (Ubuntu 18.04 didn't), and that's probably not
+    #        worth the hassle considering that our fw.sqsh is already going to
+    #        be tiny.
+    #
+    # FIXME: oops, archive layout needs to be different for fw.sqsh. no
+    #        lib/firmware path segment, contents of firmware just go right in
+    #        the root of the filesystem.
+    #
+    # NOTE: You can't just assume -noappend will remove previously existing
+    #       image.  If there exists a malformed .sqsh (or one written with
+    #       options unsupported by this version of mksquashfs), it will refuse.
+    #
+    mksquashfs lib/firmware $filename -comp xz -e .git -noappend || exit 1
 else
     find . | $cpio -o -H newc | $comp $compargs > $filename
 fi
