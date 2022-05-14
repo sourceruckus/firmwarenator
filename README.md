@@ -14,7 +14,7 @@ enabled in the kernel (e.g., add `dyndbg='func fw_get_filesystem_firmware
 still have that output available.
 
 **NOTE**: And that all depends on already having a bootable system w/ an
-uptodate /lib/firmware directory, at least temporarily.
+uptodate `/lib/firmware` directory, at least temporarily.
 
 Get the latest and greatest from https://github.com/sourceruckus/firmwarenator.
 
@@ -26,6 +26,8 @@ usage: firmwarenator IMGNAME
   -V, --version             Show version string and exit.
 
   -v, --verbose             Display extra output
+
+  -f, --force               Force overwrite existing file.
 
   -c, --compressor COMP     Use COMP compressor in pipeline during archive
                             creation.  Valid compressors are 'gzip', 'bzip2',
