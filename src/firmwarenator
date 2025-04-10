@@ -141,7 +141,8 @@ while true; do
                 compargs=$2
                 compargs_set=y
             else
-                compargs+=" $2"
+                # NOTE: not using += to keep busybox ash happy
+                compargs="$compargs $2"
             fi
             shift 2
             ;;
@@ -160,6 +161,12 @@ while true; do
             ;;
     esac
 done
+# FIXME: oh dear... busybox realpath returns error if file doesn't exist,
+#        unlike the regular realpath...  :-( wait, it only does that if the
+#        file has no path segments...  `realpath FOO` is an error, but
+#        `realpath ./FOO` works fine.  That's a bug in bb 1.37.0, should check
+#        for a fix
+#
 filename=$(realpath $1)
 
 # check for required options
@@ -175,13 +182,16 @@ if [ -e "$filename" -a -z "$allow_overwrite" ]; then
 fi
 
 # figure out compressor settings
-__comp=\$${compressor^^}_COMP
+#
+# NOTE: not using ${compressor^^} to keep busybox ash happy
+#
+__comp=\$$(echo $compressor | tr '[a-z]' '[A-Z]')_COMP
 comp=`eval echo $__comp`
 if [ -z "$compargs_set" ]; then
-    __compargs=\$${compressor^^}_COMP_ARGS
+    __compargs=\$$(echo $compressor | tr '[a-z]' '[A-Z]')_COMP_ARGS
     compargs=`eval echo $__compargs`
 fi
-__decomp=\$${compressor^^}_DECOMP
+__decomp=\$$(echo $compressor | tr '[a-z]' '[A-Z]')_DECOMP
 decomp=`eval echo $__decomp`
 # make sure supplied compressor has settings in config file
 if [ -z "$comp" -o -z "$decomp" ]; then
@@ -201,11 +211,11 @@ decho compargs: $compargs
 decho use_sqsh: $use_sqsh
 decho allow_overwrite: $allow_overwrite
 
-tmpdir=$(mktemp -dt $(basename $0)-XXXX)
+tmpdir=$(mktemp -dt $(basename $0)-XXXXXX)
 decho tmpdir: $tmpdir
 
 cd $tmpdir
-dmesg | awk '/Loading firmware/ {print $NF}'| cpio -p --make-dir .
+dmesg | awk '/Loading firmware/ {print $NF}'| cpio -p -d .
 if [ -n "$verbose" ]; then
     cpio="cpio --verbose"
 else

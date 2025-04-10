@@ -2,8 +2,8 @@ AC_PREREQ([2.65])
 
 m4_define(firmwarenator_major_version, 1)
 m4_define(firmwarenator_minor_version, 0)
-m4_define(firmwarenator_micro_version, 0)
-m4_define(firmwarenator_devtag, [])
+m4_define(firmwarenator_micro_version, 1)
+m4_define(firmwarenator_devtag, [dev])
 m4_ifnblank(firmwarenator_devtag,
 	[m4_define(firmwarenator_version, firmwarenator_major_version.firmwarenator_minor_version.firmwarenator_micro_version-firmwarenator_devtag)],
 	[m4_define(firmwarenator_version, firmwarenator_major_version.firmwarenator_minor_version.firmwarenator_micro_version)])

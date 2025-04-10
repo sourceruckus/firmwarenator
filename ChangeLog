@@ -3,6 +3,12 @@
 For the latest and greatest, see
 https://github.com/sourceruckus/firmwarenator/commits/master.
 
+* v1.0.1
+2025-04-dd: Firmwarenator v1.0.1
+
+- Replaced a couple bash-isms with equivalents that work in BusyBox's ash
+  shell.
+
 * v1.0.0
 Tagger: Michael D Labriola <veggiemike@sourceruckus.org>
 Date:   Sat May 14 01:42:37 EDT 2022
