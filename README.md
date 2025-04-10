@@ -1,7 +1,7 @@
 Firmwarenator - a magical machine-specific fw.img creator
 =========================================================
 
-Copyright 2021-2022 Michael D Labriola <veggiemike@sourceruckus.org>
+Copyright 2021-2025 Michael D Labriola <veggiemike@sourceruckus.org>
 
 Licensed under the GPLv3. See the file COPYING for details. 
 

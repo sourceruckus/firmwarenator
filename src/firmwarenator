@@ -2,7 +2,7 @@
 #
 # Firmwarenator - a magical machine-specific fw.img creator
 #
-# Copyright 2021-2022 Michael D Labriola <veggiemike@sourceruckus.org>
+# Copyright 2021-2025 Michael D Labriola <veggiemike@sourceruckus.org>
 #
 # Licensed under the GPLv3. See the file COPYING for details. 
 #
@@ -38,7 +38,7 @@ usage()
         echo
     fi
     echo "$(basename $0) - a magical machine-specific fw.img creator."
-    echo "Copyright (C) 2021-2022 Michael D Labriola <veggiemike@sourceruckus.org>"
+    echo "Copyright (C) 2021-2025 Michael D Labriola <veggiemike@sourceruckus.org>"
     echo
     echo "Firmwarenator is a utility for creating a fw.img file containing all the"
     echo "firmware required for the host system."
