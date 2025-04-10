@@ -215,6 +215,8 @@ tmpdir=$(mktemp -dt $(basename $0)-XXXXXX)
 decho tmpdir: $tmpdir
 
 cd $tmpdir
+# make sure we at least have an empty lib/firmware directory
+mkdir -p lib/firmware
 dmesg | awk '/Loading firmware/ {print $NF}'| cpio -p -d .
 if [ -n "$verbose" ]; then
     cpio="cpio --verbose"

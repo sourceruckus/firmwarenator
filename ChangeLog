@@ -8,6 +8,7 @@ https://github.com/sourceruckus/firmwarenator/commits/master.
 
 - Replaced a couple bash-isms with equivalents that work in BusyBox's ash
   shell.
+- Ensured successful image creation, even if no firmware found.
 
 * v1.0.0
 Tagger: Michael D Labriola <veggiemike@sourceruckus.org>
