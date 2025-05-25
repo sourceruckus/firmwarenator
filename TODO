@@ -1,2 +1,25 @@
 -*- mode: org -*-
 
+- Maybe take an arugument specifying specific extra files to add to the fw
+  image.  This is handy if you've created one, but you notice it's missing a
+  particular file for whatever reason.  W/out this ability, you have to fix the
+  fw problem by hand in order to get the correct "Loading firmware from..."
+  messages in dmesg.  (Either by hand-creating the fw.img or by
+  removing/reloading modules that requested firmware)
+
+- Maybe also look through dmesg output for "Direct firmware load for
+  ... failed" messages and attempt to include the requested but missing files
+  in the fw image?
+
+- Maybe take argument specifying path to alternate firmware dir (default is
+  /lib/firmware).  I don't think I can do this... it's a chicken and the egg
+  problem.  We leverage the kernel's fw loading code so that we can ensure that
+  all the fw that WOULD be loaded is actually present in the image.  We *could*
+  supply this flag, but it would break that guarantee... no likey.
+
+- Switch to zstd once i've disowned bionic.  Not really a ton of savings there
+  (space or speed), because our per-machine fw.sqsh should be tiny.
+
+- Put more instructions on fw.sqsh and fw.img usage somewhere. (e.g., how
+  exactly to add fw.img to an existing initramfs image).  Some of this is in
+  the ruckusrd manpage, but we could add more details here.

@@ -4,11 +4,12 @@ For the latest and greatest, see
 https://github.com/sourceruckus/firmwarenator/commits/master.
 
 * v1.0.1
-2025-04-dd: Firmwarenator v1.0.1
+2025-05-25: Firmwarenator v1.0.1
 
 - Replaced a couple bash-isms with equivalents that work in BusyBox's ash
   shell.
 - Ensured successful image creation, even if no firmware found.
+- Added "see also" to manpage.
 
 * v1.0.0
 Tagger: Michael D Labriola <veggiemike@sourceruckus.org>

@@ -5,3 +5,8 @@ System-wide default config file.
 .TP
 .I ~/.firmwarenator.conf
 User config file, which is read last.
+
+[see also]
+\fBruckusrd\fP(1),
+\fBmicrocodenator\fP(1),
+\fBkernel-builder\fP(1)
